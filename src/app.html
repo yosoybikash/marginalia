@@ -65,7 +65,38 @@
   header { background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow); z-index: 20; user-select: none; }
   .row { display: flex; align-items: center; gap: 6px; padding: 6px 12px; flex-wrap: wrap; }
   .row + .row { border-top: 1px solid var(--border); padding-top: 5px; padding-bottom: 5px; background: var(--surface2); }
-  .brand { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: .01em; margin-right: 6px; display: flex; align-items: center; gap: 7px; }
+  .brand { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: .01em; margin-right: 6px; display: flex; align-items: center; gap: 7px;
+    border: 0; background: none; cursor: pointer; padding: 3px 6px; border-radius: 10px; }
+  .brand:hover { background: var(--hover); }
+  .libbtn { background: var(--accent-soft); border: 1.5px solid var(--accent); color: var(--text); font-weight: 700; font-size: 14px; padding: 6px 14px; border-radius: 999px; }
+  .libbtn:hover { background: var(--accent); color: var(--accent-text); }
+  body.home .libbtn { background: var(--accent); color: var(--accent-text); }
+  .tgroup { display: flex; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 2px; }
+  .tgroup.fav { background: var(--accent-soft); border-color: var(--accent); gap: 4px; }
+  .tgroup.fav button { min-width: 74px !important; font-weight: 700; }
+  .tgroup.fav button .ic { font-size: 18px !important; }
+  #dock { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 30; display: flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px 8px; box-shadow: 0 6px 24px rgba(60,40,20,.22); }
+  body:not(.no-side) #dock { left: calc(50% + var(--side-w) / 2); }
+  #dock .dk { border: 0; background: none; cursor: pointer; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; color: var(--text); }
+  #dock .dk:hover { background: var(--hover); }
+  #dock .dk.active { background: var(--accent); color: var(--accent-text); }
+  #dock .dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--border); cursor: pointer; padding: 0; }
+  #dock .dot.active { box-shadow: 0 0 0 2px var(--accent); }
+  #dock .dsep { width: 1px; height: 22px; background: var(--border); }
+  .notepop { position: absolute; z-index: 7; background: var(--accent); color: var(--accent-text); border: 0; border-radius: 999px; padding: 5px 12px; font-size: 12.5px; font-weight: 700;
+    cursor: pointer; box-shadow: 0 3px 12px rgba(60,40,20,.3); white-space: nowrap; animation: popin .15s ease-out; }
+  .notepop:hover { filter: brightness(1.07); }
+  @keyframes popin { from { transform: scale(.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .tour-spot { position: fixed; z-index: 300; border-radius: 12px; box-shadow: 0 0 0 9999px rgba(30,20,10,.55); pointer-events: none; transition: all .25s ease; outline: 2px solid var(--accent-2); outline-offset: 2px; }
+  .tour-spot.none { outline: none; }
+  .tour-block { position: fixed; inset: 0; z-index: 299; }
+  .tour-card { position: fixed; z-index: 301; width: 340px; max-width: calc(100vw - 24px); background: var(--surface); color: var(--text); border-radius: 16px; padding: 18px 20px 14px; box-shadow: 0 12px 40px rgba(0,0,0,.35); transition: top .25s ease, left .25s ease; }
+  .tour-card h3 { font-family: var(--serif); margin: 0 0 6px; font-size: 19px; }
+  .tour-card p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--text); }
+  .tour-card .tnav { display: flex; align-items: center; gap: 6px; margin-top: 14px; }
+  .tour-card .tstep { font-size: 12px; color: var(--muted); margin-right: auto; }
+  .tour-card .tskip { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 12px; text-decoration: underline; }
   .brand small { font-family: var(--sans); font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: .04em; }
   .file-chip { display: none; align-items: center; gap: 6px; background: var(--accent-soft); border-radius: 999px; padding: 3px 6px 3px 12px; font-size: 13px; max-width: 320px; }
   .file-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -83,14 +114,13 @@
   .btn.icon { padding: 5px 8px; min-width: 32px; justify-content: center; }
   .sep { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
   #status { font-size: 12px; color: var(--muted); }
-  #tools { display: flex; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 2px; }
-  #tools button {
+  .tgroup button {
     border: 0; background: transparent; border-radius: 8px; padding: 4px 8px; cursor: pointer; font-size: 12px;
     display: flex; flex-direction: column; align-items: center; gap: 0; min-width: 48px; color: var(--text);
   }
-  #tools button .ic { font-size: 16px; line-height: 20px; height: 20px; }
-  #tools button:hover { background: var(--hover); }
-  #tools button.active { background: var(--accent); color: var(--accent-text); }
+  .tgroup button .ic { font-size: 16px; line-height: 20px; height: 20px; }
+  .tgroup button:hover { background: var(--hover); }
+  .tgroup button.active { background: var(--accent); color: var(--accent-text); }
   #opts { display: flex; align-items: center; gap: 5px; min-height: 30px; flex: 1; min-width: 0; overflow: hidden; }
   #opts > * { flex: none; }
   #opts .hint-txt { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -284,15 +314,15 @@
     background-image: linear-gradient(transparent 150px, #d9c7ab 150px, #d9c7ab 151px, transparent 151px); }
   .keys { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; font-size: 13px; }
   .keys div { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; border-bottom: 1px dotted var(--border); }
-  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 8px 16px; border-radius: 99px; font-size: 13px; z-index: 200; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast { position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 8px 16px; border-radius: 99px; font-size: 13px; z-index: 200; opacity: 0; transition: opacity .2s; pointer-events: none; }
   .toast.show { opacity: .95; }
 </style>
 </head>
 <body class="home">
 <header>
   <div class="row">
-    <div class="brand">✒︎ Marginalia <small>PDF library &amp; annotator</small></div>
-    <button class="btn needs-doc" id="libBtn" title="Back to your library">📚 Library</button>
+    <button class="brand" id="brandBtn" title="Go to your library home">✒︎ Marginalia <small>PDF library &amp; annotator</small></button>
+    <button class="btn libbtn" id="libBtn" title="Go to your library (all your PDFs)">📚 My Library</button>
     <div class="file-chip" id="fileChip"><span class="dcat" id="docCat"></span><span class="sl">›</span><span id="filename"></span><button id="closeDoc" title="Close and return to the library">✕</button></div>
     <label class="btn" title="Add PDFs to your library (Ctrl+O)">＋ Add PDF<input type="file" id="fileInput" accept="application/pdf,.pdf" multiple></label>
     <div class="spacer"></div>
@@ -315,9 +345,12 @@
   </div>
   <div class="row needs-doc">
     <button class="btn icon" id="sideBtn" title="Show / hide sidebar (\)">☰</button>
-    <div id="tools">
+    <div class="tgroup fav" id="favTools">
+      <button data-tool="highlight" title="Highlight text: press on a word and drag (H)"><span class="ic">🖍</span>Highlight</button>
+      <button data-tool="note" title="Margin note: click the page (N)"><span class="ic">🗒</span>Note</button>
+    </div>
+    <div class="tgroup" id="tools">
       <button data-tool="select" title="Pan and select text (V)"><span class="ic">🖐</span>Select</button>
-      <button data-tool="highlight" title="Highlight text: drag across words (H)"><span class="ic">🖍</span>Highlight</button>
       <button data-tool="underline" title="Underline text (U)"><span class="ic"><u>U</u></span>Underline</button>
       <button data-tool="strike" title="Strike through text (S)"><span class="ic"><s>S</s></span>Strike</button>
       <button data-tool="marker" title="Freehand highlighter (M)"><span class="ic">🖌</span>Marker</button>
@@ -325,7 +358,6 @@
       <button data-tool="shape" title="Boxes, circles, arrows, lines (R)"><span class="ic">⬭</span>Shapes</button>
       <button data-tool="stamp" title="Checkmark, cross and star stamps (K)"><span class="ic">✓</span>Stamp</button>
       <button data-tool="text" title="Type on the page (T)"><span class="ic">𝐓</span>Text</button>
-      <button data-tool="note" title="Margin note: click the page (N)"><span class="ic">🗒</span>Note</button>
       <button data-tool="sign" title="Place your signature (G)"><span class="ic">✍️</span>Sign</button>
       <button data-tool="eraser" title="Eraser: click or drag over marks (E)"><span class="ic">⌫</span>Eraser</button>
     </div>
@@ -393,13 +425,22 @@
               <div>Drop PDFs anywhere on this window</div>
               <button class="btn primary" id="openBtn">Choose PDFs…</button>
             </div>
-            <div class="hint">PDFs and notes are saved in this browser and are still here after you restart.<br>Press <kbd>?</kbd> at any time to see keyboard shortcuts.</div>
+            <div class="hint">PDFs and notes are saved in this browser and are still here after you restart.<br>Press <kbd>?</kbd> for shortcuts, or <a href="#" id="tourLink">take a quick tour</a>.</div>
           </div>
         </section>
       </div>
     </div>
   </div>
 </main>
+<div id="dock" class="needs-doc">
+  <button class="dk" data-tool="highlight" title="Highlight (H)">🖍 Highlight</button>
+  <span id="dockColors" style="display:flex;gap:4px"></span>
+  <span class="dsep"></span>
+  <button class="dk" data-tool="note" title="Margin note (N)">🗒 Note</button>
+  <span class="dsep"></span>
+  <button class="dk" data-tool="select" title="Select / scroll (V)">🖐</button>
+  <button class="dk" id="dockUndo" title="Undo (Ctrl+Z)">↶</button>
+</div>
 
 <div class="modal" id="addModal">
   <div class="dialog" style="max-width:520px">
@@ -440,7 +481,7 @@
     <h2>Keyboard shortcuts</h2>
     <p>Single-letter keys work when you're not typing in a note.</p>
     <div class="keys" id="keysList"></div>
-    <div class="actions"><button class="btn primary" id="helpClose">Got it</button></div>
+    <div class="actions"><button class="btn" id="tourBtn">🧭 Take the tour</button><div class="spacer"></div><button class="btn primary" id="helpClose">Got it</button></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -536,7 +577,8 @@ $('themeBtn').onclick = (e) => {
 function setTool(t) {
   if (t === 'sign' && !getSignature()) { openSigModal(() => setTool('sign')); return; }
   tool = t;
-  document.querySelectorAll('#tools button').forEach(b => b.classList.toggle('active', b.dataset.tool === t));
+  document.querySelectorAll('button[data-tool]').forEach(b => b.classList.toggle('active', b.dataset.tool === t));
+  buildDock();
   pages.forEach(p => { p.pageEl.className = 'page tool-' + t; });
   if (!['select', 'highlight', 'underline', 'strike'].includes(t)) window.getSelection()?.removeAllRanges();
   buildOpts();
@@ -572,7 +614,18 @@ function buildOpts() {
   const hints = { select: 'Scroll, or select text to copy it', highlight: 'Press on a word and drag, like selecting text. Click a single word to mark just that word.', underline: 'Press on a word and drag', strike: 'Press on a word and drag', note: 'Click the page to pin a note in the margin', text: 'Click where you want to type', eraser: 'Click or drag over marks to remove them' };
   if (hints[tool]) { const h = document.createElement('span'); h.className = 'lbl hint-txt'; h.style.marginLeft = '6px'; h.title = hints[tool]; h.textContent = hints[tool]; add(h); }
 }
-document.querySelectorAll('#tools button').forEach(b => b.onclick = () => setTool(b.dataset.tool));
+document.querySelectorAll('button[data-tool]').forEach(b => b.onclick = () => setTool(b.dataset.tool));
+function buildDock() {
+  const box = $('dockColors'); if (!box) return;
+  box.innerHTML = '';
+  HL.forEach(c => {
+    const d = document.createElement('button'); d.className = 'dot' + (tool === 'highlight' && color.highlight === c ? ' active' : '');
+    d.style.background = c; d.title = 'Highlight in ' + (COLOR_NAMES[c] || c);
+    d.onclick = () => { color.highlight = c; savePrefs(); setTool('highlight'); };
+    box.appendChild(d);
+  });
+}
+$('dockUndo').onclick = () => undo();
 
 // ============ History & persistence ============
 const snapshot = () => JSON.stringify(ann.items);
@@ -943,7 +996,13 @@ $('libSort').value = libSort;
 $('libSort').onchange = (e) => { libSort = e.target.value; localStorage.setItem('pdfannot:sort', libSort); renderFiles(); };
 $('backupBtn').onclick = backupLibrary;
 $('restoreInput').onchange = (e) => { const f = e.target.files[0]; e.target.value = ''; if (f) restoreLibrary(f); };
-$('libBtn').onclick = () => closeDoc();
+$('libBtn').onclick = () => goHome();
+$('brandBtn').onclick = () => goHome();
+function goHome() {
+  libSearch = ''; $('libSearch').value = '';
+  if (pdfDoc) { docCat = null; closeDoc(); }
+  libView = 'all'; renderLibrary();
+}
 let dragDepth = 0;
 const isFileDrag = (e) => [...(e.dataTransfer?.types || [])].includes('Files');
 window.addEventListener('dragenter', e => { if (!isFileDrag(e)) return; e.preventDefault(); dragDepth++; document.body.classList.add('dragging'); });
@@ -976,6 +1035,7 @@ async function openBytes(buf, name, key, category = null) {
   searchIndex = null; clearSearch(); $('searchInput').value = '';
   await buildPages();
   setTool(tool); updateUndoButtons(); renderMarks(); buildThumbs();
+  setTimeout(() => maybeTour('doc'), 700);
   setStatus(ann.items.length ? `Restored ${ann.items.length} annotation${ann.items.length === 1 ? '' : 's'}` : `${pdfDoc.numPages} page${pdfDoc.numPages === 1 ? '' : 's'}`);
 }
 function closeDoc() {
@@ -1428,7 +1488,7 @@ function attachMarkup(p) {
     if (!st) return;
     if (e && e.type === 'pointerup') { st.end = ptFromEvent(p, e); update(); }
     const live = st.live, box = st.box; st = null;
-    if (live && live.rects.length && (!box || (live.rects[0].w > 3 && live.rects[0].h > 3))) { delete live.live; commitAdd(live); }
+    if (live && live.rects.length && (!box || (live.rects[0].w > 3 && live.rects[0].h > 3))) { delete live.live; commitAdd(live); showNotePop(p, live); }
     drawAnn(p);
   };
   c.addEventListener('pointerup', end); c.addEventListener('pointercancel', end);
@@ -1449,10 +1509,30 @@ function mergeLineRects(rects) {
 }
 
 // ============ Margin notes ============
+// After a highlight, offer a one-click "Add note" right next to it.
+function showNotePop(p, mark) {
+  document.querySelectorAll('.notepop').forEach(n => n.remove());
+  const last = mark.rects[mark.rects.length - 1], first = mark.rects[0];
+  const b = document.createElement('button'); b.className = 'notepop'; b.textContent = '📝 Add note';
+  b.title = 'Write a margin note about this ' + (mark.style === 'highlight' ? 'highlight' : 'mark');
+  b.style.left = Math.min((last.x + last.w) * scale + 6, p.w * scale - 110) + 'px';
+  b.style.top = (last.y + last.h) * scale + 4 + 'px';
+  b.addEventListener('pointerdown', (e) => e.stopPropagation());
+  b.onclick = (e) => {
+    e.stopPropagation(); b.remove();
+    const it = addNote(p, [Math.max(6, first.x - 10), first.y + first.h / 2]);
+    if (it) { it.ref = mark.id; }
+  };
+  p.pageEl.appendChild(b);
+  const off = (e) => { if (e.target !== b) { b.remove(); document.removeEventListener('pointerdown', off, true); } };
+  setTimeout(() => document.addEventListener('pointerdown', off, true), 0);
+  setTimeout(() => { b.remove(); document.removeEventListener('pointerdown', off, true); }, 9000);
+}
 function addNote(p, [x, y]) {
   const it = commitAdd({ type: 'note', page: p.num, x, y, text: '' });
   renderNotes(p);
   p.margin.querySelector(`.note[data-id="${it.id}"] textarea`)?.focus();
+  return it;
 }
 function noteNumber(it) {
   return ann.items.filter(n => n.type === 'note').sort((a, b) => a.page - b.page || a.y - b.y || a.x - b.x).indexOf(it) + 1;
@@ -1916,6 +1996,81 @@ async function exportPdf() {
 }
 $('exportPdf').onclick = exportPdf;
 
+
+// ============ Site tour ============
+const TOURS = {
+  home: [
+    { title: 'Welcome to Marginalia ✒︎', text: 'A cosy place to keep your PDFs and write all over them: highlights, notes in the margin, and more. This quick tour takes about a minute.' },
+    { sel: '#uploadBtn', title: 'Add your PDFs', text: 'Upload one PDF or many, or simply drop them anywhere on this window. You\'ll be asked which category to put them in.' },
+    { sel: '.lib-side .lib-h2', title: 'Organise with categories', text: 'Create categories like “Economic Development”. Drag a PDF card onto a category to move it, and hover over a category to rename or delete it.' },
+    { sel: '#libSearch', title: 'Find anything', text: 'Search by file name, category, or even the words in your notes and highlights.' },
+    { sel: '.lib-foot-btns', title: 'Your files stay on this computer', text: 'PDFs are saved in this browser, so they\'re still here after a restart. Use Back up now and then, and Restore to move your library to another browser or computer.' },
+    { sel: '#libBtn', title: 'Home is always one click away', text: 'While reading, click My Library (or the Marginalia name) to come back here.' },
+    { sel: '#themeBtn', title: 'Make it yours', text: 'Pick a colour theme: cream, honey, rose, sage, terracotta or a warm dark mode.' },
+    { sel: '#helpBtn', title: 'Help is here', text: 'Shortcuts live under the ? button, and you can replay this tour from there any time. Open a PDF to see the reading tools.' },
+  ],
+  doc: [
+    { sel: '#favTools', title: 'Your two main tools', text: 'Highlight: press on a word and drag, just like selecting text. Note: click anywhere on the page to pin a note in the margin.' },
+    { sel: '#dock', title: 'The quick dock', text: 'Always at the bottom of the screen: switch highlight colours, add a note, or undo, without reaching for the toolbar.' },
+    { sel: '.page-row .margin', title: 'Notes live in the margin', text: 'Each note gets a numbered pin on the page. Tip: after you highlight something, click “📝 Add note” right next to it.', pad: -4 },
+    { sel: '#tools', title: 'More tools', text: 'Underline, strike through, marker, pen, shapes, stamps, text and your signature, plus an eraser. Every tool has a one-letter shortcut.' },
+    { sel: '#sidebar .tabs', title: 'Find your way around', text: 'Page thumbnails, a list of every mark you\'ve made (click one to jump to it), and search inside the PDF.' },
+    { sel: '#exportBtn', title: 'Save and share', text: 'Your marks save automatically. Download the PDF with everything drawn in, or a summary of your notes as Markdown or CSV.' },
+    { sel: '#libBtn', title: 'Back to your library', text: 'Click here when you\'re done. That\'s it: happy reading!' },
+  ],
+};
+let tourState = null;
+function maybeTour(name) {
+  if (localStorage.getItem('pdfannot:tour:' + name) || tourState || document.querySelector('.modal.open')) return;
+  if (name === 'home' && !document.body.classList.contains('home')) return;
+  startTour(name);
+}
+function startTour(name) {
+  endTour();
+  const steps = TOURS[name].filter(s => !s.sel || visibleEl(s.sel));
+  if (!steps.length) return;
+  const block = document.createElement('div'); block.className = 'tour-block';
+  const spot = document.createElement('div'); spot.className = 'tour-spot';
+  const card = document.createElement('div'); card.className = 'tour-card';
+  block.onclick = () => tourGo(1);
+  document.body.append(block, spot, card);
+  tourState = { name, steps, i: 0, block, spot, card };
+  localStorage.setItem('pdfannot:tour:' + name, '1');
+  renderTour();
+  window.addEventListener('resize', renderTour);
+}
+function visibleEl(sel) { const el = document.querySelector(sel); if (!el) return null; const r = el.getBoundingClientRect(); return r.width && r.height ? el : null; }
+function tourGo(d) { if (!tourState) return; const n = tourState.i + d; if (n < 0) return; if (n >= tourState.steps.length) { endTour(); return; } tourState.i = n; renderTour(); }
+function endTour() { if (!tourState) return; tourState.block.remove(); tourState.spot.remove(); tourState.card.remove(); tourState = null; window.removeEventListener('resize', renderTour); }
+function renderTour() {
+  if (!tourState) return;
+  const { steps, i, spot, card } = tourState, st = steps[i];
+  const el = st.sel && visibleEl(st.sel);
+  const last = i === steps.length - 1;
+  card.innerHTML = `<h3>${esc(st.title)}</h3><p>${esc(st.text)}</p><div class="tnav"><span class="tstep">${i + 1} of ${steps.length}</span>${last ? '' : '<button class="tskip">Skip tour</button>'}${i ? '<button class="btn tback">Back</button>' : ''}<button class="btn primary tnext">${last ? 'Finish' : 'Next'}</button></div>`;
+  card.querySelector('.tnext').onclick = () => tourGo(1);
+  card.querySelector('.tback')?.addEventListener('click', () => tourGo(-1));
+  card.querySelector('.tskip')?.addEventListener('click', endTour);
+  const cw = card.offsetWidth, ch = card.offsetHeight, W = window.innerWidth, H = window.innerHeight;
+  if (!el) {
+    spot.className = 'tour-spot none'; Object.assign(spot.style, { left: W / 2 + 'px', top: H / 2 + 'px', width: '0px', height: '0px' });
+    Object.assign(card.style, { left: (W - cw) / 2 + 'px', top: (H - ch) / 2 + 'px' });
+    return;
+  }
+  spot.className = 'tour-spot';
+  let r = el.getBoundingClientRect();
+  const pad = st.pad ?? 6;
+  const box = { l: Math.max(4, r.left - pad), t: Math.max(4, r.top - pad), r: Math.min(W - 4, r.right + pad), b: Math.min(H - 4, r.bottom + pad) };
+  Object.assign(spot.style, { left: box.l + 'px', top: box.t + 'px', width: box.r - box.l + 'px', height: box.b - box.t + 'px' });
+  // place the card below, above, right or left of the target, whichever fits
+  let left, top;
+  if (box.b + 12 + ch < H) { top = box.b + 12; left = (box.l + box.r) / 2 - cw / 2; }
+  else if (box.t - 12 - ch > 0) { top = box.t - 12 - ch; left = (box.l + box.r) / 2 - cw / 2; }
+  else if (box.r + 12 + cw < W) { left = box.r + 12; top = (box.t + box.b) / 2 - ch / 2; }
+  else { left = box.l - 12 - cw; top = (box.t + box.b) / 2 - ch / 2; }
+  Object.assign(card.style, { left: Math.max(12, Math.min(W - cw - 12, left)) + 'px', top: Math.max(12, Math.min(H - ch - 12, top)) + 'px' });
+}
+
 // ============ Keyboard ============
 const KEYMAP = { v: 'select', h: 'highlight', u: 'underline', s: 'strike', m: 'marker', p: 'pen', r: 'shape', k: 'stamp', t: 'text', n: 'note', g: 'sign', e: 'eraser' };
 const KEYS_HELP = [
@@ -1927,9 +2082,12 @@ const KEYS_HELP = [
 ];
 $('keysList').innerHTML = KEYS_HELP.map(([a, k]) => `<div><span>${esc(a)}</span><span>${k.split(' ').map(x => `<kbd>${esc(x)}</kbd>`).join(' ')}</span></div>`).join('');
 const openHelp = () => $('helpModal').classList.add('open');
-$('helpBtn').onclick = openHelp; $('helpClose').onclick = () => $('helpModal').classList.remove('open');
+$('helpBtn').onclick = openHelp;
+$('tourBtn').onclick = () => { $('helpModal').classList.remove('open'); startTour(document.body.classList.contains('home') ? 'home' : 'doc'); };
+$('tourLink').onclick = (e) => { e.preventDefault(); startTour('home'); }; $('helpClose').onclick = () => $('helpModal').classList.remove('open');
 document.querySelectorAll('.modal').forEach(m => m.addEventListener('pointerdown', (e) => { if (e.target === m) { if (m.id === 'sigModal') $('sigCancel').click(); else closeModal(m); } }));
 window.addEventListener('keydown', (e) => {
+  if (tourState) { if (e.key === 'Escape') endTour(); else if (e.key === 'ArrowRight' || e.key === 'Enter') tourGo(1); else if (e.key === 'ArrowLeft') tourGo(-1); e.preventDefault(); return; }
   const typing = e.target.matches('textarea, input[type=text], input[type=search]');
   const mod = e.ctrlKey || e.metaKey, k = e.key.toLowerCase();
   if (e.key === 'Escape') {
@@ -1957,7 +2115,7 @@ window.addEventListener('keydown', (e) => {
 });
 window.addEventListener('beforeunload', () => { if (docKey) persist(); });
 
-setTool('highlight'); updateUndoButtons(); renderLibrary().then(() => { if (lib.files.length) askPersist(); });
+setTool('highlight'); updateUndoButtons(); renderLibrary().then(() => { if (lib.files.length) askPersist(); setTimeout(() => maybeTour('home'), 500); });
 window.__annot = { openBytes, get ann() { return ann; }, exportPdf, setTool, get scale() { return scale; }, get pages() { return pages; }, getTextGeom, caretAt };
 })();
 </script>
