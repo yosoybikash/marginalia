@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Marginalia: PDF Library &amp; Annotator</title>
+<script data-goatcounter="https://bikashgupta.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <style>
   :root {
     --bg: #f4ecdf; --surface: #fffaf2; --surface2: #f8efe1; --border: #e6d6bf; --text: #3b2e24; --muted: #8b7462;
@@ -46,6 +47,15 @@
   .themes .sw i { width: 14px; height: 18px; display: block; }
   .themes .tn { flex: 1; }
   .themes .tick { color: var(--accent); font-weight: 700; }
+  .settings { width: 290px; max-height: 85vh; }
+  .settings .mhead { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 6px 10px 3px; }
+  .settings .mi { width: 22px; text-align: center; flex: none; }
+  .settings kbd { margin-left: auto; }
+  .settings .mcontact { padding: 2px 10px 8px; }
+  .settings .mcontact p { margin: 0 0 8px; font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+  .settings .mrow { display: flex; gap: 6px; }
+  .settings .mrow button { width: auto !important; flex: none; display: inline-flex !important; padding: 5px 9px !important; border: 1px solid var(--border) !important; }
+  .settings .mrow a { flex: 1; display: flex; padding: 6px 8px; white-space: nowrap; min-width: 0; font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; justify-content: center; }
   [data-theme="dark"] {
     --bg: #1d1814; --surface: #2a221c; --surface2: #322921; --border: #43372c; --text: #f1e5d6; --muted: #b59f89;
     --accent: #e8925f; --accent-2: #f0ad78; --accent-soft: #4a3426; --accent-text: #2a1a10;
@@ -341,9 +351,7 @@
         <button id="clearAll">🗑 <div>Clear all annotations<small>You can undo this</small></div></button>
       </div>
     </div>
-    <a class="btn" id="contactBtn" href="mailto:bikash.gupta.srh@gmail.com?subject=Marginalia" title="Questions or ideas? Email Bikash">✉️ Contact</a>
-    <button class="btn" id="themeBtn" title="Choose a colour theme (D switches dark mode)">🎨 Theme</button>
-    <button class="btn icon" id="helpBtn" title="Keyboard shortcuts (?)">?</button>
+    <button class="btn" id="settingsBtn" title="Settings: colour theme, help and contact">⚙️ Settings</button>
   </div>
   <div class="row needs-doc">
     <button class="btn icon" id="sideBtn" title="Show / hide sidebar (\)">☰</button>
@@ -614,23 +622,41 @@ function applyTheme(th) {
 }
 applyTheme(localStorage.getItem('pdfannot:theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'cream'));
 const toggleTheme = () => applyTheme(document.documentElement.dataset.theme === 'dark' ? (localStorage.getItem('pdfannot:lightTheme') || 'cream') : 'dark');
-$('themeBtn').onclick = (e) => {
+const CONTACT_EMAIL = 'bikash.gupta.srh@gmail.com';
+const resetPreview = () => { document.documentElement.dataset.theme = localStorage.getItem('pdfannot:theme') || 'cream'; };
+$('settingsBtn').onclick = (e) => {
   e.stopPropagation();
+  if (document.querySelector('.popmenu.settings')) { document.querySelector('.popmenu.settings').remove(); resetPreview(); return; }
   document.querySelectorAll('.popmenu').forEach(m => m.remove());
-  const m = document.createElement('div'); m.className = 'popmenu themes';
-  const cur = document.documentElement.dataset.theme;
-  for (const [id, name, cols] of THEMES) {
-    const b = document.createElement('button');
-    b.innerHTML = `<span class="sw">${cols.map(c => `<i style="background:${c}"></i>`).join('')}</span><span class="tn">${name}</span>${id === cur ? '<span class="tick">✓</span>' : ''}`;
+  const m = document.createElement('div'); m.className = 'popmenu themes settings';
+  const head = (t) => { const h = document.createElement('div'); h.className = 'mhead'; h.textContent = t; m.appendChild(h); };
+  const item = (html, fn, title) => { const b = document.createElement('button'); b.innerHTML = html; if (title) b.title = title; b.onclick = fn; m.appendChild(b); return b; };
+  head('Colour theme');
+  const themeBtns = THEMES.map(([id, name, cols]) => {
+    const b = item(`<span class="sw">${cols.map(c => `<i style="background:${c}"></i>`).join('')}</span><span class="tn">${name}</span><span class="tick"></span>`,
+      () => { applyTheme(id); markTick(); });
+    b.dataset.tid = id;
     b.onmouseenter = () => { document.documentElement.dataset.theme = id; };
-    b.onclick = () => { applyTheme(id); m.remove(); };
-    m.appendChild(b);
-  }
-  m.onmouseleave = () => { document.documentElement.dataset.theme = localStorage.getItem('pdfannot:theme') || 'cream'; };
+    b.onmouseleave = resetPreview;
+    return b;
+  });
+  const markTick = () => { const cur = localStorage.getItem('pdfannot:theme') || 'cream'; themeBtns.forEach(b => b.querySelector('.tick').textContent = b.dataset.tid === cur ? '✓' : ''); };
+  markTick();
+  m.appendChild(document.createElement('hr'));
+  head('Help');
+  item('<span class="mi">🧭</span><span class="tn">Take the tour</span>', () => { m.remove(); resetPreview(); startTour(document.body.classList.contains('home') ? 'home' : 'doc'); });
+  item('<span class="mi">⌨️</span><span class="tn">Keyboard shortcuts</span><kbd>?</kbd>', () => { m.remove(); resetPreview(); openHelp(); });
+  m.appendChild(document.createElement('hr'));
+  head('Contact');
+  const c = document.createElement('div'); c.className = 'mcontact';
+  c.innerHTML = `<p>Questions, ideas or found a bug? Get in touch with Bikash, who made Marginalia.</p>
+    <div class="mrow"><a class="btn" href="mailto:${CONTACT_EMAIL}?subject=Marginalia">✉️ ${CONTACT_EMAIL}</a><button class="btn icon" title="Copy email address">📋</button></div>`;
+  c.querySelector('button').onclick = async () => { try { await navigator.clipboard.writeText(CONTACT_EMAIL); toast('Email address copied'); } catch (_) { toast(CONTACT_EMAIL); } };
+  m.appendChild(c);
   document.body.appendChild(m);
   const r = e.currentTarget.getBoundingClientRect();
   m.style.top = (r.bottom + 6) + 'px'; m.style.left = Math.max(10, r.right - m.offsetWidth) + 'px';
-  setTimeout(() => document.addEventListener('pointerdown', function off(ev) { if (!m.contains(ev.target)) { m.remove(); document.documentElement.dataset.theme = localStorage.getItem('pdfannot:theme') || 'cream'; document.removeEventListener('pointerdown', off); } }), 0);
+  setTimeout(() => document.addEventListener('pointerdown', function off(ev) { if (!m.contains(ev.target) && ev.target !== $('settingsBtn')) { m.remove(); resetPreview(); document.removeEventListener('pointerdown', off); } }), 0);
 };
 
 // ============ Toolbar ============
@@ -2066,9 +2092,7 @@ const TOURS = {
     { sel: '#libSearch', title: 'Find anything', text: 'Search by file name, category, or even the words in your notes and highlights.' },
     { sel: '.lib-foot-btns', title: 'Your files stay on this computer', text: 'PDFs are saved in this browser, so they\'re still here after a restart. Use Back up now and then, and Restore to move your library to another browser or computer.' },
     { sel: '#libBtn', title: 'Home is always one click away', text: 'While reading, click My Library (or the Marginalia name) to come back here.' },
-    { sel: '#themeBtn', title: 'Make it yours', text: 'Pick a colour theme: cream, honey, rose, sage, terracotta or a warm dark mode.' },
-    { sel: '#contactBtn', title: 'Say hello', text: 'Questions, ideas or bugs? The Contact button opens an email to Bikash, who made Marginalia.' },
-    { sel: '#helpBtn', title: 'Help is here', text: 'Shortcuts live under the ? button, and you can replay this tour from there any time. Open a PDF to see the reading tools.' },
+    { sel: '#settingsBtn', title: 'Settings ⚙️', text: 'Pick a colour theme (cream, honey, rose, sage, terracotta or a warm dark mode), see keyboard shortcuts, replay this tour, or email Bikash with questions and ideas. Open a PDF to see the reading tools.' },
   ],
   doc: [
     { sel: '#favTools', title: 'Your two main tools', text: 'Highlight: press on a word and drag, just like selecting text. Note: click anywhere on the page to pin a note in the margin.' },
@@ -2077,7 +2101,7 @@ const TOURS = {
     { sel: '#tools', title: 'More tools', text: 'Underline, strike through, marker, pen, shapes, stamps, text and your signature, plus an eraser. Every tool has a one-letter shortcut.' },
     { sel: '#sidebar .tabs', title: 'Find your way around', text: 'Page thumbnails, a list of every mark you\'ve made (click one to jump to it), and search inside the PDF.' },
     { sel: '#exportBtn', title: 'Save and share', text: 'Your marks save automatically. Download the PDF with everything drawn in, or a summary of your notes as Markdown or CSV.' },
-    { sel: '#libBtn', title: 'Back to your library', text: 'Click here when you\'re done. That\'s it: happy reading!' },
+    { sel: '#libBtn', title: 'Back to your library', text: 'Click here when you\'re done. Help and this tour are always under ⚙️ Settings. Happy reading!' },
   ],
 };
 let tourState = null;
@@ -2143,7 +2167,6 @@ const KEYS_HELP = [
 ];
 $('keysList').innerHTML = KEYS_HELP.map(([a, k]) => `<div><span>${esc(a)}</span><span>${k.split(' ').map(x => `<kbd>${esc(x)}</kbd>`).join(' ')}</span></div>`).join('');
 const openHelp = () => $('helpModal').classList.add('open');
-$('helpBtn').onclick = openHelp;
 $('tourBtn').onclick = () => { $('helpModal').classList.remove('open'); startTour(document.body.classList.contains('home') ? 'home' : 'doc'); };
 $('tourLink').onclick = (e) => { e.preventDefault(); startTour('home'); }; $('helpClose').onclick = () => $('helpModal').classList.remove('open');
 document.querySelectorAll('.modal').forEach(m => m.addEventListener('pointerdown', (e) => { if (e.target === m) { if (m.id === 'sigModal') $('sigCancel').click(); else closeModal(m); } }));

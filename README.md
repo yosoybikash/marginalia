@@ -15,7 +15,8 @@ A PDF library and annotator that runs entirely in your browser.
 
 Nothing is uploaded anywhere. Your PDFs and notes are stored in your own browser
 (IndexedDB and localStorage) on your own computer. Everyone who opens the link gets
-their own separate, private library. Use **Back up** to save your library to a file,
+their own separate, private library. The site counts page visits with
+[GoatCounter](https://www.goatcounter.com/), which uses no cookies and never sees your files. Use **Back up** to save your library to a file,
 and **Restore** to bring it back or move it to another browser or computer.
 
 ## Offline use
