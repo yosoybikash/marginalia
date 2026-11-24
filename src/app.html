@@ -108,6 +108,7 @@
     display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; transition: background .12s, border-color .12s; color: var(--text);
   }
   .btn:hover { background: var(--hover); }
+  a.btn { text-decoration: none; }
   .btn.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
   .btn.primary:hover { filter: brightness(1.06); }
   .btn:disabled { opacity: .4; cursor: default; }
@@ -340,6 +341,7 @@
         <button id="clearAll">🗑 <div>Clear all annotations<small>You can undo this</small></div></button>
       </div>
     </div>
+    <a class="btn" id="contactBtn" href="mailto:bikash.gupta.srh@gmail.com?subject=Marginalia" title="Questions or ideas? Email Bikash">✉️ Contact</a>
     <button class="btn" id="themeBtn" title="Choose a colour theme (D switches dark mode)">🎨 Theme</button>
     <button class="btn icon" id="helpBtn" title="Keyboard shortcuts (?)">?</button>
   </div>
@@ -2007,6 +2009,7 @@ const TOURS = {
     { sel: '.lib-foot-btns', title: 'Your files stay on this computer', text: 'PDFs are saved in this browser, so they\'re still here after a restart. Use Back up now and then, and Restore to move your library to another browser or computer.' },
     { sel: '#libBtn', title: 'Home is always one click away', text: 'While reading, click My Library (or the Marginalia name) to come back here.' },
     { sel: '#themeBtn', title: 'Make it yours', text: 'Pick a colour theme: cream, honey, rose, sage, terracotta or a warm dark mode.' },
+    { sel: '#contactBtn', title: 'Say hello', text: 'Questions, ideas or bugs? The Contact button opens an email to Bikash, who made Marginalia.' },
     { sel: '#helpBtn', title: 'Help is here', text: 'Shortcuts live under the ? button, and you can replay this tour from there any time. Open a PDF to see the reading tools.' },
   ],
   doc: [
